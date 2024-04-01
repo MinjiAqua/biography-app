@@ -23,10 +23,14 @@ export const signIn = async (email, password) => {
       refresh_token,
     );
 
-    await EncryptedStorage.setItem('accessToken', response.data.access_token);
-    await EncryptedStorage.setItem('refreshToken', response.data.refresh_token);
+    await EncryptedStorage.setItem('accessToken', access_token);
+    await EncryptedStorage.setItem('refreshToken', refresh_token);
+    await EncryptedStorage.setItem('email', email);
 
-    //response 응답 자체를 리턴하고,
+    let accessToken= await EncryptedStorage.getItem('accessToken');
+
+    console.log('로컬에서 가져온 값 : ', accessToken);
+  
   } catch (error) {
     console.error('일반 로그인 중 실패 : ', error);
   }
@@ -43,6 +47,14 @@ export const kakaoLogin = async () => {
     });
   } catch (error) {}
 };
+
+
+export const reissueTokens = async() => {
+  const refreshToken = EncryptedStorage.getItem("refreshToken");
+  const response = await axios.post(`${baseURl}/auth/renew`,{refreshToken});
+  return response.data; //수정 필요
+}
+
 
 export const sign_out = async () => {
   try {

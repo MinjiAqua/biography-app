@@ -10,11 +10,12 @@ function SignInScreen({navigation}) {
     try {
       console.log('email, password : ', email, password);
       const response = await signIn(email, password);
-      navigation.navigate('Home');
+      navigation.navigate('ModifyProfile');
       
     } catch (error) {
       console.error('일반 로그인 요청 실패 : ', error);
     }
+    
   };
 
   return (

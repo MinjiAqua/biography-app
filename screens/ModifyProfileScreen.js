@@ -13,8 +13,7 @@ import SettingHeader from '../components/SettingHeader';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {launchImageLibrary} from 'react-native-image-picker';
 import usersStorage from '../storages/usersStorage';
-import BorderedInput from '../components/BorderedInput';
-import {updateProfile} from '../api/profileApi';
+import {updateProfile, createProfile} from '../api/profileApi';
 
 function ModifyProfileScreen({route, navigation}) {
   const {
@@ -22,11 +21,11 @@ function ModifyProfileScreen({route, navigation}) {
     nickname: initialNickname,
     profileImage: initialProfileImage,
   } = route.params || {};
-  const [oneliner, setOneliner] = useState(initialOneliner || '');
+  const [oneliner, setOneliner] = useState(initialOneliner || ''); //한줄소개
   const [response, setResponse] = useState(
     initialProfileImage ? {assets: [{uri: initialProfileImage}]} : null,
   );
-  const [profileImage, setProfileImage] = useState(initialProfileImage || null);
+  const [profileImage, setProfileImage] = useState(''|| null);
   const [nickname, setNickname] = useState(initialNickname || '');
 
   const onSelectImage = () => {
@@ -69,7 +68,8 @@ function ModifyProfileScreen({route, navigation}) {
         oneliner: oneliner || '',
         nickname: nickname || '',
       };
-      await usersStorage.set(newUser);
+      
+      await createProfile(nickname, oneliner, profileImage);
       console.log('User profile updated successfully');
     } catch (error) {
       console.error('Error updating user profile:', error);

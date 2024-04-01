@@ -1,20 +1,19 @@
 import axios from 'axios';
-//회원가입 api
-const baseUrl = 'https://autobiography-9d461.web.app';
-//`${baseUrl}/auth/email`
+
+const axiosInstance = axios.create({
+  baseURL: 'https://autobiography-9d461.web.app',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export const reqEmailver = async email => {
   try {
-    const response = await axios.post(
-      `${baseUrl}/auth/email`,
-      JSON.stringify({email: email}),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+    const response = await axiosInstance.post(
+      '/auth/email',
+      JSON.stringify({ email }),
     );
-    //post했을 때 얻는 응답값(response)
+
     console.log('email', email);
     if (response.status === 200) {
       console.log('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
@@ -31,26 +30,18 @@ export const reqEmailver = async email => {
   }
 };
 
-//`${baseUrl}/auth/email/validation`
-export const checkEmailver = async (certificationkey, certificationcode) => {
+export const checkEmailver = async (cert_key, cert_code) => {
   try {
-    console.log('넘어온 값 : ', certificationkey, certificationcode);
-    const response = await axios.post(
-      `${baseUrl}/auth/email/validation`,
+    console.log('넘어온 값 : ', cert_key, cert_code);
+    const response = await axiosInstance.post(
+      '/auth/email/validation',
       JSON.stringify({
         certification_key: certificationkey,
         certification_code: certificationcode,
       }),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
     );
 
     const validate = response.data.is_validated;
-    //is_validated는 0또는 1을 가지고 있을 것.
-    //인증 성공시 0반환, 실패시 1반환.
     console.log('is_validated 값 : ', validate);
     return validate;
   } catch (error) {
@@ -60,13 +51,13 @@ export const checkEmailver = async (certificationkey, certificationcode) => {
 
 export const normalsignUp = async (email, password, name, tel, birth, nickname) => {
   try {
-    const response = await axios.post(`${baseUrl}/auth/sign-up`, {
-      email: email,
-      password: password,
-      name: name,
-      tel: tel,
-      birth: birth,
-      nickname: nickname,
+    const response = await axiosInstance.post('/auth/sign-up', {
+      email,
+      password,
+      name,
+      tel,
+      birth,
+      nickname,
     });
 
     const success = response.data.success;
