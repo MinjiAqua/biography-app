@@ -61,3 +61,25 @@ export const deleteEssay = async id => {
 
 // const essayId = 'your-essay-id'; // 삭제할 에세이의 ID
 // deleteEssay(essayId);
+
+// export const getEssay = async() => {
+//   try{
+//     const accessToken = await EncryptedStorage.getItem('accessToken');
+//     const response = await axios.get(`${baseURL}/api/board/`)
+//   }
+
+// };
+
+// //지피티가 알려준 것..
+// export const getEssayById = async (essayId) => {
+//   try {
+//     const accessToken = await EncryptedStorage.getItem('accessToken');
+//     const response = await axios.get(`${baseURL}/api/board/${essayId}`, {
+//       headers: { Authorization: `Bearer ${accessToken}` },
+//     });
+//     return response.data; // 서버에서 받아온 글 데이터 반환
+//   } catch (error) {
+//     console.error(`Error fetching essay with ID ${essayId}:`, error);
+//     throw error;
+//   }
+// };

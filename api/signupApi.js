@@ -7,26 +7,44 @@ const axiosInstance = axios.create({
   },
 });
 
+
+
+
+// export const reqEmailver = async email => {
+//   try {
+//     const response = await axiosInstance.post('/auth/email', { email : email });
+
+//     if(response.data && response.data.certification_key){
+//       console.log('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+//       alert('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
+//     }
+//     else {
+//       throw new Error('이메일 인증 실패');
+//     }
+//     return response.data.certification_key;
+
+//   } catch (error) {
+//     console.error('이메일 인증 요청 실패 : ', error);
+//     alert('이메일 인증 요청 실패 : ' + error.message);
+//   }
+// };
+
 export const reqEmailver = async email => {
   try {
-    const response = await axiosInstance.post(
-      '/auth/email',
-      JSON.stringify({ email }),
-    );
+    const response = await axiosInstance.post('/auth/email', { email : email });
 
-    console.log('email', email);
-    if (response.status === 200) {
+    if(response.data && response.data.certification_key){
       console.log('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
       alert('인증번호가 발송되었습니다. 이메일을 확인해주세요.');
-    } else {
+    }
+    else {
       throw new Error('이메일 인증 실패');
     }
-
     return response.data.certification_key;
+
   } catch (error) {
     console.error('이메일 인증 요청 실패 : ', error);
-    alert('이메일 인증 요청 실패 : ', error);
-    return '';
+    alert('이메일 인증 요청 실패 : ' + error.message);
   }
 };
 
@@ -35,10 +53,10 @@ export const checkEmailver = async (cert_key, cert_code) => {
     console.log('넘어온 값 : ', cert_key, cert_code);
     const response = await axiosInstance.post(
       '/auth/email/validation',
-      JSON.stringify({
-        certification_key: certificationkey,
-        certification_code: certificationcode,
-      }),
+      {
+        certification_key: cert_key,
+        certification_code: cert_code,
+      },
     );
 
     const validate = response.data.is_validated;

@@ -8,7 +8,7 @@ function SignInScreen({navigation}) {
 
   const requestSignin = async () => {
     try {
-      console.log('email, password : ', email, password);
+      
       const response = await signIn(email, password);
       navigation.navigate('ModifyProfile');
       

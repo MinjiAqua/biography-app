@@ -30,7 +30,6 @@ function SignUpScreen({navigation}) {
       console.log('text:', text);
       console.log('인증 키:', certificationKey);
       setCertification(certificationKey);
-      console.log('certification:', certification);
     } catch (error) {
       console.log('text:', text);
       console.error('이메일 인증 요청 실패:', error);
@@ -45,9 +44,10 @@ function SignUpScreen({navigation}) {
   const handleEmailVerCheck = async () => {
 
     try {
-      console.log('certification:', certification);
+      console.log('인증확인 certification:', certification);
+      console.log('number : ', number);
       const is_validated = await checkEmailver(certification, number);
-
+      console.log('is_validated :', is_validated);
       // is_validated 값에 따라 다른 동작 수행 가능
       if (is_validated === 0) {
         console.log('이메일 인증 성공!');

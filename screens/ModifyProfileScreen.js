@@ -13,20 +13,18 @@ import SettingHeader from '../components/SettingHeader';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {launchImageLibrary} from 'react-native-image-picker';
 import usersStorage from '../storages/usersStorage';
-import {updateProfile, createProfile} from '../api/profileApi';
+import {createProfile} from '../api/profileApi';
 
 function ModifyProfileScreen({route, navigation}) {
-  const {
-    oneliner: initialOneliner,
+  const{
     nickname: initialNickname,
-    profileImage: initialProfileImage,
-  } = route.params || {};
-  const [oneliner, setOneliner] = useState(initialOneliner || ''); //한줄소개
-  const [response, setResponse] = useState(
-    initialProfileImage ? {assets: [{uri: initialProfileImage}]} : null,
-  );
-  const [profileImage, setProfileImage] = useState(''|| null);
-  const [nickname, setNickname] = useState(initialNickname || '');
+  } = route.params||{};
+  const [oneliner, setOneliner] = useState(''); //한줄소개
+  const [response, setResponse] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  //const [nickname, setNickname] = useState(initialNickname || '');
+  const [nickname, setNickname] = useState(null);
+
 
   const onSelectImage = () => {
     launchImageLibrary(
@@ -42,7 +40,7 @@ function ModifyProfileScreen({route, navigation}) {
         }
         setResponse(res);
         setProfileImage(res?.assets[0]?.uri);
-        //저장소에 이미지 저장은 아니고 profileImage에 새로운 상태 업데이또.
+        //저장소에 이미지 저장은 아니고 profileImage에 새로운 상태 업데이트.
       },
     );
   };
@@ -63,14 +61,9 @@ function ModifyProfileScreen({route, navigation}) {
 
   const changeUserProfile = async () => {
     try {
-      const newUser = {
-        profileImage: profileImage || '',
-        oneliner: oneliner || '',
-        nickname: nickname || '',
-      };
-      
       await createProfile(nickname, oneliner, profileImage);
-      console.log('User profile updated successfully');
+      
+      
     } catch (error) {
       console.error('Error updating user profile:', error);
     }
@@ -153,7 +146,7 @@ function ModifyProfileScreen({route, navigation}) {
             <Menu title={'한줄 소개'} />
             <View>
               <TextInput
-                defaultValue={initialOneliner}
+                defaultValue={"한줄 소개를 입력해주세요."}
                 onChangeText={onChangeText}
                 value={oneliner}
               />
