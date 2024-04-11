@@ -24,7 +24,7 @@ function SignInScreen({navigation}) {
         <TextInput
           placeholder="이메일"
           style={styles.input}
-          value={email}
+          value={email}a
           onChangeText={value => setEmail(value)}
         />
         <TextInput
