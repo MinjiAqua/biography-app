@@ -3,7 +3,9 @@ import {SafeAreaView, TextInput, StyleSheet, View, Text} from 'react-native';
 import WriteHeader from '../components/WriteHeader';
 import {postEssay} from '../api/essayApi';
 
+let question='';
 function Question(props) {
+  question = props.ask;
   return (
     <View style={styles.question}>
       <Text style={styles.questionText}>{props.ask}</Text>
@@ -33,7 +35,7 @@ function PageScreen({route, navigation}) {
       //그리고 storage에 업데이트된 Essays 저장.
       //await essaysStorage.set(newEssay);
 
-      await postEssay(title, body, publicStatus);
+      await postEssay(question,title, body, publicStatus);
       console.log('Essay saved successfully');
     } catch (error) {
       console.error('Error saving essay:', error);

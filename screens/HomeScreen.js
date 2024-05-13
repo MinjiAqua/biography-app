@@ -24,17 +24,23 @@ function MenuTab() {
 //스크롤 뷰 넣을 것.
 function HomeScreen() {
   const navigation = useNavigation();
+  //글, 프로필 이미지, 닉네임 
   const [essays, setEssays] = useState([]);
   const [image, setImage] = useState();
   const [nickname, setNickname] = useState();
+
   useEffect(() => {
     const loadEssays = async () => {
       try {
-        const storedEssays = await essaysStorage.get();
-        const filteredEssays = storedEssays
-          .filter(item => item.isPublic)
-          .reverse();
-        setEssays(filteredEssays);
+        //로컬 스토리지에서 가져오는 코드.  
+        //const storedEssays = await essaysStorage.get();
+        // const filteredEssays = storedEssays
+        //   .filter(item => item.isPublic)
+        //   .reverse();
+        // setEssays(filteredEssays);
+
+        //서버에서 가져오는 코드
+        
       } catch (error) {
         console.error('Error loading essays:', error);
       }

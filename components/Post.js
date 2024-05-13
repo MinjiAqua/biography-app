@@ -9,11 +9,12 @@ function Post({question, title, body, time}) {
 
     return `${year}.${month}.${day}`;
   };
+  //<Text style={styles.body}>{formatDate(time)}</Text>
+  //<Text style={styles.question}>{question}</Text>
   return (
     <View style={styles.item}>
       <View>
-        <Text style={styles.body}>{formatDate(time)}</Text>
-        <Text style={styles.question}>{question}</Text>
+        
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.body}>{body}</Text>
       </View>

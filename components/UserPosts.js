@@ -9,33 +9,47 @@ import {
 import Post from './Post';
 import essaysStorage from '../storages/essaysStorage';
 import {useNavigation} from '@react-navigation/native';
+import { seeMyEssay } from '../api/essayApi';
 
 function UserPosts() {
   const [essays, setEssays] = useState([]);
   const navigation = useNavigation();
   useEffect(() => {
     const loadEssays = async () => {
+      //essaysStorage에서 가져오는 부분.  
+      //try {
+      //   const storedEssays = await essaysStorage.get();
+      //   setEssays(storedEssays);
+      // } catch (error) {
+      //   console.error('Error loading essays:', error);
+      // }
       try {
-        const storedEssays = await essaysStorage.get();
-        setEssays(storedEssays);
-      } catch (error) {
+        const myEssays = await seeMyEssay();
+        
+        setEssays(myEssays);
+        console.log("myEssays : ", essays);
+      }catch(error){
         console.error('Error loading essays:', error);
       }
+
     };
+    
     loadEssays();
   }, []);
 
-  const handleMyEssayPress = item => {
-    console.log(item);
-    navigation.navigate('MoveToMyEssay', {
-      id: item.id,
-      question: item.question,
-      title: item.title,
-      body: item.body,
-      time: item.createdAt,
-      isPublic: item.isPublic,
-    });
-  };
+  // const handleMyEssayPress = item => {
+  //   console.log(item);
+  //   navigation.navigate('MoveToMyEssay', {
+  //     id: item.id,
+  //     question: item.question,
+  //     title: item.title,
+  //     body: item.body,
+  //     time: item.createdAt,
+  //     isPublic: item.isPublic,
+  //   });
+  // };
+
+  //글 순서 바꾸기
   const reverseOrder = () => {
     setEssays(prevEssays => [...prevEssays].reverse());
   };
@@ -51,11 +65,11 @@ function UserPosts() {
         renderItem={({item}) => (
           <TouchableOpacity onPress={() => handleMyEssayPress(item)}>
             <Post
-              id={item.id}
-              question={item.question}
+              // id={item.id}
+              //question={item.question}
               title={item.title}
-              body={item.body}
-              time={item.createdAt}
+              body={item.content}
+              //time={item.createdAt}
             />
           </TouchableOpacity>
         )}
