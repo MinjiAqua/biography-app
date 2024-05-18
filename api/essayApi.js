@@ -4,8 +4,6 @@ import axiosInstance from './axiosInstance';
 
 //글 작성하기
 
-const baseURl = 'https://autobiography-9d461.web.app';
-
 export const postEssay = async (question,title, content, secret) => {
   let accessToken= await EncryptedStorage.getItem('accessToken');
   console.log('accessToken:',accessToken);
@@ -26,12 +24,17 @@ export const postEssay = async (question,title, content, secret) => {
 };
 //내가 작성한 글 보기
 export const seeMyEssay = async() => {
-  let accessToken= await EncryptedStorage.getItem('accessToken');
   try {
     const response = await axiosInstance.get('/my-boards');
 
     console.log('내 글을 성공적으로 불러왔습니다.: ', response.data);
-    return response.data;
+    return response.data.map(essay => ({
+      title: essay.title,
+      question: essay.question,
+      content: essay.content,
+      updatedAt: essay.updatedAt,
+      secret: essay.secret,
+    }));
   }catch(error){
     console.error('내 글 불러오는 중에 오류 발생 :', error.message);
     throw error;
@@ -39,6 +42,8 @@ export const seeMyEssay = async() => {
 //이후에 postEssay함수 활용해 게시글 올림 postArticle('게시글 제목', '게시글 내용', true); 이렇게 작성함.
 
 //글 수정하기
+//id를 알아야 같이 보낼 수 있음. 
+//글 상세보기 
 export const updateEssay = async (id, title, content) => {
   try {
     const response = await axios.put('/api/board/{id}', {
@@ -52,6 +57,18 @@ export const updateEssay = async (id, title, content) => {
     throw error;
   }
 };
+
+export const seeAllEssay = async() => {
+  try {
+    const response = await axiosInstance.get('api/board');
+
+    console.log('전체 글을 성공적으로 불러왔습니다.: ', response.data);
+    return response.data;
+  }catch(error){
+    console.error('전체 글 불러오는 중에 오류 발생 :', error.message);
+    throw error;
+  }};
+
 
 //아래의 내용 참고하여 사용.
 // const essayId = 'your-essay-id'; // 수정할 에세이의 ID

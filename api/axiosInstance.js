@@ -1,7 +1,8 @@
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-const baseURL = 'https://autobiography-9d461.web.app';
+//const baseURL = 'https://autobiography-9d461.web.app';
+const baseURL = 'https://ec2-43-201-27-116.ap-northeast-2.compute.amazonaws.com'
 const axiosInstance = axios.create({ baseURL });
 
 
@@ -28,11 +29,12 @@ const reissueToken = async () => {
 axiosInstance.interceptors.request.use(
     async (config) => {
         try {
-            const accessToken = await EncryptedStorage.getItem('accessToken');
+          console.log("요청보냄");
+           const accessToken = await EncryptedStorage.getItem('accessToken');
             config.headers['Content-Type'] = 'application/json';
-            config.headers['Authorization'] = accessToken;
-
-            console.log('원래 요청 config:', config);
+            //config.headers['Authorization'] = accessToken;
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
+            console.log('원래 토큰:', accessToken);
             return config;
         } catch (error) {
             console.error('요청 인터셉터 오류:', error);
@@ -50,6 +52,7 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     async function(error) {
       // error.response가 존재하는지 확인
+      console.log("오류 발생");
       console.log(error.response.status);
       if (error.response && error.response.status === 401) {
         try {
