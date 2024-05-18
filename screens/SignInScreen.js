@@ -1,6 +1,6 @@
-import {React, useState} from 'react';
-import {Button, TextInput, StyleSheet, View} from 'react-native';
-import {signIn} from '../api/signinApi';
+import { React, useState } from 'react';
+import { Button, TextInput, StyleSheet, View } from 'react-native';
+import { kakaoLogin, signIn } from '../api/signinApi';
 
 function SignInScreen({navigation}) {
   const [email, setEmail] = useState('');
@@ -18,23 +18,40 @@ function SignInScreen({navigation}) {
     
   };
 
+  const requestKakaoLogin = async () => {
+    try {
+      const success = await kakaoLogin();
+      if(success) {
+        navigation.navigate('ModifyProfile');
+      }
+      else {
+        console.error('카카오 로그인 실패');
+      }
+    }
+    catch(error) {
+      console.error('카카오 로그인 요청 실패 : ' ,  error);
+    }
+  }
+
   return (
     <>
       <View>
         <TextInput
           placeholder="이메일"
           style={styles.input}
-          value={email}a
+          value={email}
           onChangeText={value => setEmail(value)}
         />
         <TextInput
           placeholder="비밀번호"
+          secureTextEntry={true}
           style={styles.input}
           value={password}
           onChangeText={value => setPassword(value)}
         />
       </View>
       <Button title="로그인" style={styles.button} onPress={requestSignin} />
+      <Button title="카카오 로그인" style={styles.button} onPress={requestKakaoLogin} />
     </>
   );
 }
